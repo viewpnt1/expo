@@ -9339,6 +9339,35 @@ CACHE_KEYS:
     PROJECT_NAME: EXDevice
     SPECS:
       - EXDevice (2.2.1)
+  EXDevMenu:
+    BUILD_SETTINGS_CHECKSUM:
+      EXDevMenu:
+        :debug: cc711f6ee4e4d726f9a51fd62954db04
+        :release: cc711f6ee4e4d726f9a51fd62954db04
+    CHECKSUM: 83316fe0e2fabf443a2b60e5cf3bb0dc78c3d430
+    FILES:
+      - "../../packages/expo-dev-menu/assets/.dev-menu-packager-host"
+      - "../../packages/expo-dev-menu/assets/EXDevMenuApp.ios.js"
+      - "../../packages/expo-dev-menu/ios/DevMenuAppInstance.swift"
+      - "../../packages/expo-dev-menu/ios/DevMenuGestureRecognizer.swift"
+      - "../../packages/expo-dev-menu/ios/DevMenuManager.swift"
+      - "../../packages/expo-dev-menu/ios/DevMenuUtils.swift"
+      - "../../packages/expo-dev-menu/ios/DevMenuViewController.swift"
+      - "../../packages/expo-dev-menu/ios/DevMenuWindow.swift"
+      - "../../packages/expo-dev-menu/ios/Headers/EXDevMenu-Bridging-Header.h"
+      - "../../packages/expo-dev-menu/ios/Headers/EXDevMenu.h"
+      - "../../packages/expo-dev-menu/ios/Headers/RCTRootView+Private.h"
+      - "../../packages/expo-dev-menu/ios/Interceptors/DevMenuMotionInterceptor.swift"
+      - "../../packages/expo-dev-menu/ios/Interceptors/DevMenuTouchInterceptor.swift"
+      - "../../packages/expo-dev-menu/ios/MenuItems/DevMenuItem.swift"
+      - "../../packages/expo-dev-menu/ios/Modules/DevMenuInternalModule.swift"
+      - "../../packages/expo-dev-menu/ios/Modules/DevMenuModule.swift"
+      - "../../packages/expo-dev-menu/ios/Protocols/DevMenuDelegateProtocol.swift"
+      - "../../packages/expo-dev-menu/ios/Protocols/DevMenuExtensionProtocol.swift"
+      - "../../packages/expo-dev-menu/README.md"
+    PROJECT_NAME: EXDevMenu
+    SPECS:
+      - EXDevMenu (0.1.0)
   EXDocumentPicker:
     BUILD_SETTINGS_CHECKSUM:
       EXDocumentPicker:
@@ -10310,9 +10339,10 @@ CACHE_KEYS:
       - nanopb/encode (0.3.9011)
   Pods-Exponent:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: fcc77c5ae89f76311e5bb4602fe4f824
-      Release: fcc77c5ae89f76311e5bb4602fe4f824
+      Debug: 044e18a32642905f9ad0baca05440bd2
+      Release: 044e18a32642905f9ad0baca05440bd2
     FILES:
+      - "${PODS_CONFIGURATION_BUILD_DIR}/EXDevMenu/EXDevMenu.bundle"
       - "${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionFaceModel/GoogleMVFaceDetectorResources.bundle"
       - "${PODS_ROOT}/Amplitude-iOS/Amplitude/api.amplitude.com.der"
       - "${PODS_ROOT}/Amplitude-iOS/Amplitude/ComodoCaLimitedRsaCertificationAuthority.der"
@@ -10323,12 +10353,12 @@ CACHE_KEYS:
       - "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
   Pods-ExponentIntegrationTests:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 2730f0b4379717c9bf4b0c4b22288dcc
-      Release: 2730f0b4379717c9bf4b0c4b22288dcc
+      Debug: 92881963003caafe8a8afa430f6903ec
+      Release: 92881963003caafe8a8afa430f6903ec
   Pods-Tests:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 2730f0b4379717c9bf4b0c4b22288dcc
-      Release: 2730f0b4379717c9bf4b0c4b22288dcc
+      Debug: 92881963003caafe8a8afa430f6903ec
+      Release: 92881963003caafe8a8afa430f6903ec
   Protobuf:
     BUILD_SETTINGS_CHECKSUM:
       Protobuf:
