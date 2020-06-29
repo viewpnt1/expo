@@ -78,22 +78,17 @@ export default class BarcodeScannerExample extends React.Component<object, State
       );
     }
 
-    const circles = [];
-
-    if (this.state.cornerPoints) {
-      for (const point of this.state.cornerPoints) {
-        circles.push(
-          <Svg.Circle
-            cx={point.x}
-            cy={point.y}
-            r={3}
-            strokeWidth={0.5}
-            stroke="#CF4048"
-            fill="#CF4048"
-          />
-        );
-      }
-    }
+    const circles = (this.state.cornerPoints || []).map((point, index) => (
+      <Svg.Circle
+        cx={point.x}
+        cy={point.y}
+        r={3}
+        strokeWidth={0.5}
+        stroke="#CF4048"
+        fill="#CF4048"
+        key={index}
+      />
+    ));
 
     return (
       <View style={styles.container}>
