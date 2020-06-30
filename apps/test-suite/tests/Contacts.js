@@ -1,9 +1,10 @@
 'use strict';
 
-import * as Permissions from 'expo-permissions';
-import * as Contacts from 'expo-contacts';
-import { Platform } from 'react-native';
 import { Asset } from 'expo-asset';
+import * as Contacts from 'expo-contacts';
+import * as Permissions from 'expo-permissions';
+import { Platform } from 'react-native';
+
 import * as TestUtils from '../TestUtils';
 export const name = 'Contacts';
 
@@ -14,12 +15,11 @@ async function sortContacts(expect, sortField) {
     pageOffset: 0,
     pageSize: 5,
   });
-
   for (let i = 1; i < contacts.length; i++) {
     const { [sortField]: propA } = contacts[i - 1];
     const { [sortField]: propB } = contacts[i];
     if (propA && propB) {
-      const order = propA.localeCompare(propB);
+      const order = propA.toLowerCase().localeCompare(propB.toLowerCase());
       expect(Math.max(order, 0)).toBe(0);
     }
   }
@@ -46,81 +46,87 @@ export async function test({ describe, it, xdescribe, jasmine, expect }) {
     let firstGroup;
     let testGroups = [];
 
-    if (Platform.OS === 'ios') {
-      let customContactId;
-      describe('Contacts.addContactAsync()', () => {
-        it('creates contact', async () => {
-          const image = Asset.fromModule(require('../assets/icons/app.png'));
-          await image.downloadAsync();
+    // if (Platform.OS === 'ios') {
+    let customContactId;
+    describe('Contacts.addContactAsync()', () => {
+      it('creates contact', async () => {
+        const image = Asset.fromModule(require('../assets/icons/app.png'));
+        await image.downloadAsync();
 
-          customContactId = await Contacts.addContactAsync({
-            [Contacts.Fields.Image]: image.localUri,
-            [Contacts.Fields.FirstName]: 'Eric',
-            [Contacts.Fields.LastName]: 'Cartman',
-            [Contacts.Fields.JobTitle]: 'Actor',
-          });
-          expect(typeof customContactId).toBe('string');
+        customContactId = await Contacts.addContactAsync({
+          [Contacts.Fields.Image]: image.localUri,
+          [Contacts.Fields.FirstName]: 'Eric',
+          [Contacts.Fields.LastName]: 'Cartman',
+          [Contacts.Fields.JobTitle]: 'Actor',
+          [Contacts.Fields.PhoneNumbers]: [
+            {
+              number: '123456789',
+              label: 'work',
+            },
+          ],
         });
+        expect(typeof customContactId).toBe('string');
       });
+    });
 
-      it('gets a local image', async () => {
-        // This may need to be tweaked because you cannot add test contacts on android
-        const contact = await Contacts.getContactByIdAsync(customContactId, [
-          Contacts.Fields.Image,
-          'imageBase64',
-        ]);
-        expect(contact.imageAvailable).toBe(true);
-        expect(contact.thumbnail).toBeUndefined();
+    it('gets a local image', async () => {
+      // This may need to be tweaked because you cannot add test contacts on android
+      const contact = await Contacts.getContactByIdAsync(customContactId, [
+        Contacts.Fields.Image,
+        'imageBase64',
+      ]);
+      expect(contact.imageAvailable).toBe(true);
+      expect(contact.thumbnail).toBeUndefined();
 
-        // TODO(Bacon): Add contact creation for Android
-        if (isAndroid) {
-          expect(contact.image).toEqual(
-            jasmine.objectContaining({
-              uri: jasmine.any(String),
-            })
-          );
-        } else {
-          expect(contact.image).toEqual(
-            jasmine.objectContaining({
-              uri: jasmine.any(String),
-              height: jasmine.any(Number),
-              width: jasmine.any(Number),
-              base64: jasmine.any(String),
-            })
-          );
+      // TODO(Bacon): Add contact creation for Android
+      if (isAndroid) {
+        expect(contact.image).toEqual(
+          jasmine.objectContaining({
+            uri: jasmine.any(String),
+          })
+        );
+      } else {
+        expect(contact.image).toEqual(
+          jasmine.objectContaining({
+            uri: jasmine.any(String),
+            height: jasmine.any(Number),
+            width: jasmine.any(Number),
+            base64: jasmine.any(String),
+          })
+        );
+      }
+    });
+
+    describe('Contacts.writeContactToFileAsync()', () => {
+      it('returns uri', async () => {
+        const localUri = await Contacts.writeContactToFileAsync({ id: customContactId });
+
+        expect(typeof localUri).toBe('string');
+      });
+    });
+
+    describe('Contacts.removeContactAsync()', () => {
+      it('removes contact', async () => {
+        let errorMessage;
+        try {
+          await Contacts.removeContactAsync(customContactId);
+        } catch ({ message }) {
+          errorMessage = message;
         }
+        expect(errorMessage).toBeUndefined();
       });
-
-      describe('Contacts.writeContactToFileAsync()', () => {
-        it('returns uri', async () => {
-          const localUri = await Contacts.writeContactToFileAsync({ id: customContactId });
-
-          expect(typeof localUri).toBe('string');
-        });
-      });
-
-      describe('Contacts.removeContactAsync()', () => {
-        it('removes contact', async () => {
-          let errorMessage;
-          try {
-            await Contacts.removeContactAsync(customContactId);
-          } catch ({ message }) {
-            errorMessage = message;
-          }
-          expect(errorMessage).toBeUndefined();
-        });
-      });
-    }
+    });
 
     describe('Contacts.getContactsAsync()', () => {
       it('gets permission and at least one result, all results of right shape', async () => {
         await TestUtils.acceptPermissionsAndRunCommandAsync(() => {
           return Permissions.askAsync(Permissions.CONTACTS);
         });
-        let contacts = await Contacts.getContactsAsync({
+        const contacts = await Contacts.getContactsAsync({
           fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Emails],
           pageSize: 1,
         });
+
         expect(contacts.data.length > 0).toBe(true);
         contacts.data.forEach(({ id, name, phoneNumbers, emails }) => {
           expect(typeof id === 'string' || typeof id === 'number').toBe(true);
